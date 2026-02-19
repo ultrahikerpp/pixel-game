@@ -1,0 +1,206 @@
+.game {
+    background: radial-gradient(ellipse at 50% 0%, #1a0a2e 0%, var(--bg) 60%);
+    justify-content: flex-start;
+    padding-top: 20px;
+    gap: 20px;
+}
+
+/* ── Flash overlays ── */
+.correctFlash {
+    animation: flashGreen 0.5s ease forwards;
+}
+
+.wrongFlash {
+    animation: flashRed 0.5s ease forwards;
+}
+
+@keyframes flashGreen {
+    0% {
+        background: rgba(57, 255, 20, 0.15);
+    }
+
+    100% {
+        background: radial-gradient(ellipse at 50% 0%, #1a0a2e 0%, var(--bg) 60%);
+    }
+}
+
+@keyframes flashRed {
+    0% {
+        background: rgba(255, 60, 110, 0.2);
+    }
+
+    100% {
+        background: radial-gradient(ellipse at 50% 0%, #1a0a2e 0%, var(--bg) 60%);
+    }
+}
+
+/* ── Top bar ── */
+.topBar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.scoreBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 60px;
+}
+
+.scoreLabel {
+    font-family: var(--font-pixel);
+    font-size: 6px;
+    color: var(--text-dim);
+}
+
+.scoreVal {
+    font-family: var(--font-pixel);
+    font-size: 18px;
+    color: var(--primary);
+}
+
+/* ── Arena ── */
+.arena {
+    display: flex;
+    align-items: flex-start;
+    gap: 28px;
+    width: 100%;
+    max-width: 800px;
+}
+
+/* ── Boss column ── */
+.bossCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-width: 148px;
+}
+
+.bossHp {
+    width: 120px;
+    height: 10px;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    overflow: hidden;
+}
+
+.bossHpBar {
+    height: 100%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    transition: width 0.4s ease;
+}
+
+/* ── Question column ── */
+.questionCol {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+}
+
+.questionBox {
+    padding: 18px 20px;
+}
+
+.qNum {
+    font-family: var(--font-pixel);
+    font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+}
+
+.qText {
+    font-family: var(--font-pixel);
+    font-size: 22px;
+    line-height: 2;
+    color: var(--text);
+}
+
+/* ── Choices ── */
+.choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.choiceBtn {
+    font-family: var(--font-pixel);
+    font-size: 18px;
+    line-height: 1.6;
+    background: var(--surface);
+    color: var(--text);
+    border: 3px solid var(--border);
+    padding: 12px 14px;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    box-shadow: 0 3px 0 #000;
+    transition: transform 0.06s, box-shadow 0.06s, background 0.1s, border-color 0.1s;
+}
+
+.choiceBtn:hover:not(:disabled) {
+    background: var(--surface2);
+    border-color: var(--cyan);
+    color: var(--cyan);
+}
+
+.choiceBtn:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: none;
+}
+
+.choiceBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.correctChoice {
+    background: rgba(57, 255, 20, 0.12) !important;
+    border-color: var(--green) !important;
+    color: var(--green) !important;
+    box-shadow: 0 0 12px rgba(57, 255, 20, 0.3) !important;
+}
+
+.wrongChoice {
+    background: rgba(255, 60, 110, 0.12) !important;
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+}
+
+.choiceKey {
+    font-size: 22px;
+    color: var(--primary);
+    min-width: 14px;
+    font-weight: bold;
+}
+
+.choiceText {
+    color: inherit;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+    .arena {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .choices {
+        grid-template-columns: 1fr;
+    }
+
+    .bossCol {
+        flex-direction: row;
+        min-width: unset;
+    }
+}

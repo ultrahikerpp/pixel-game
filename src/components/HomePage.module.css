@@ -1,0 +1,123 @@
+.home {
+    background: radial-gradient(ellipse at 50% 30%, #1a1a3e 0%, var(--bg) 70%);
+}
+
+/* Starfield */
+.stars {
+    position: fixed;
+    inset: 0;
+    background-image:
+        radial-gradient(1px 1px at 10% 15%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 30% 60%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 25%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 45%, #fff 0%, transparent 100%),
+        radial-gradient(1px 1px at 20% 85%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 10%, rgba(255, 255, 255, 0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 95%, rgba(255, 255, 255, 0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 65% 5%, rgba(255, 255, 255, 0.7) 0%, transparent 100%),
+        radial-gradient(2px 2px at 25% 40%, rgba(245, 197, 24, 0.4) 0%, transparent 100%),
+        radial-gradient(2px 2px at 75% 65%, rgba(0, 229, 255, 0.3) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    width: 100%;
+    max-width: 480px;
+}
+
+.titleWrap {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.title {
+    font-family: var(--font-pixel);
+    font-size: clamp(28px, 8vw, 48px);
+    line-height: 1.4;
+    color: var(--primary);
+    letter-spacing: 0.08em;
+}
+
+.titleSub {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--accent);
+    letter-spacing: 0.4em;
+}
+
+.titleSub2 {
+    font-family: var(--font-pixel);
+    font-size: 9px;
+    color: var(--cyan);
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 8px var(--cyan);
+}
+
+.panel {
+    width: 100%;
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.label {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+}
+
+.input {
+    font-family: var(--font-pixel);
+    font-size: 11px;
+    background: var(--bg);
+    color: var(--primary);
+    border: 3px solid var(--border);
+    padding: 12px 14px;
+    outline: none;
+    width: 100%;
+    caret-color: var(--primary);
+    transition: border-color 0.2s;
+}
+
+.input::placeholder {
+    color: var(--border);
+}
+
+.input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary);
+}
+
+.error {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--accent);
+}
+
+.mockBadge {
+    font-family: var(--font-pixel);
+    font-size: 7px;
+    color: var(--cyan);
+    background: rgba(0, 229, 255, 0.08);
+    border: 1px solid rgba(0, 229, 255, 0.2);
+    padding: 6px 10px;
+    text-align: center;
+}
+
+.footer {
+    font-family: var(--font-pixel);
+    font-size: 7px;
+    color: var(--text-dim);
+    text-align: center;
+    letter-spacing: 0.1em;
+}

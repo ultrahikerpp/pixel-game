@@ -1,0 +1,124 @@
+.result {
+    background: radial-gradient(ellipse at 50% 20%, #1a0a0a 0%, var(--bg) 70%);
+    gap: 28px;
+}
+
+/* ── Banner ── */
+.banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 24px 40px;
+    border: 3px solid;
+    text-align: center;
+}
+
+.victory {
+    border-color: var(--primary);
+    background: rgba(245, 197, 24, 0.06);
+    box-shadow: 0 0 30px rgba(245, 197, 24, 0.15), 4px 4px 0 #000;
+}
+
+.defeat {
+    border-color: var(--accent);
+    background: rgba(255, 60, 110, 0.06);
+    box-shadow: 0 0 30px rgba(255, 60, 110, 0.15), 4px 4px 0 #000;
+}
+
+.bannerIcon {
+    font-size: 48px;
+    animation: victoryBounce 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes victoryBounce {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.12);
+    }
+}
+
+.bannerText {
+    font-family: var(--font-pixel);
+    font-size: clamp(24px, 6vw, 40px);
+    letter-spacing: 0.1em;
+}
+
+.bannerSub {
+    font-family: var(--font-pixel);
+    font-size: 9px;
+    color: var(--text-dim);
+    letter-spacing: 0.2em;
+}
+
+/* ── Stats panel ── */
+.stats {
+    width: 100%;
+    max-width: 460px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.statRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.statLabel {
+    font-family: var(--font-pixel);
+    font-size: 7px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+}
+
+.statVal {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    color: var(--text);
+}
+
+.bigScore {
+    font-size: 20px;
+    color: var(--primary);
+}
+
+.divider {
+    height: 2px;
+    background: var(--border);
+    margin: 4px 0;
+}
+
+.verdict {
+    font-family: var(--font-pixel);
+    font-size: 24px;
+    line-height: 1.8;
+    text-align: center;
+    padding: 10px;
+}
+
+.verdictWin {
+    color: var(--green);
+}
+
+.verdictLose {
+    color: var(--accent);
+}
+
+/* ── Actions ── */
+.actions {
+    display: flex;
+    gap: 16px;
+}
+
+.notice {
+    font-family: var(--font-pixel);
+    font-size: 7px;
+    color: var(--text-dim);
+    opacity: 0.6;
+}

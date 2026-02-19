@@ -1,0 +1,46 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.label {
+    font-family: var(--font-pixel);
+    font-size: 8px;
+    color: var(--text-dim);
+    white-space: nowrap;
+    min-width: 60px;
+}
+
+.track {
+    flex: 1;
+    display: flex;
+    gap: 3px;
+}
+
+.segment {
+    flex: 1;
+    height: 14px;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+}
+
+.filled {
+    border-color: transparent;
+}
+
+.green {
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+}
+
+.yellow {
+    background: var(--primary);
+    box-shadow: 0 0 6px var(--primary);
+}
+
+.red {
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+}

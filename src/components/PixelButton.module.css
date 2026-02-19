@@ -1,0 +1,78 @@
+.btn {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    padding: 14px 20px;
+    cursor: pointer;
+    border: 3px solid transparent;
+    line-height: 1.4;
+    letter-spacing: 0.05em;
+    transition: transform 0.06s, box-shadow 0.06s;
+    position: relative;
+    outline: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(3px);
+    box-shadow: 0 0 0 #000 !important;
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.full {
+    width: 100%;
+}
+
+/* ── Primary (yellow) ── */
+.primary {
+    background: var(--primary);
+    color: #000;
+    border-color: #a88a10;
+    box-shadow: 0 4px 0 #6b5800, 4px 0 0 #a88a10;
+}
+
+.primary:hover:not(:disabled) {
+    background: #ffe066;
+}
+
+/* ── Secondary ── */
+.secondary {
+    background: var(--surface2);
+    color: var(--text);
+    border-color: var(--border);
+    box-shadow: 0 4px 0 #000, 4px 0 0 #111;
+}
+
+.secondary:hover:not(:disabled) {
+    background: var(--border);
+    color: #fff;
+}
+
+/* ── Danger (red/pink) ── */
+.danger {
+    background: var(--accent);
+    color: #fff;
+    border-color: #9b0030;
+    box-shadow: 0 4px 0 #5a001c, 4px 0 0 #9b0030;
+}
+
+.danger:hover:not(:disabled) {
+    background: #ff6b8a;
+}
+
+/* ── Ghost ── */
+.ghost {
+    background: transparent;
+    color: var(--text-dim);
+    border-color: var(--border);
+    box-shadow: none;
+}
+
+.ghost:hover:not(:disabled) {
+    color: var(--text);
+    border-color: var(--text-dim);
+}

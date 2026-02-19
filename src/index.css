@@ -1,0 +1,142 @@
+/* ============================================================
+   QUIZ DUNGEON — Global Pixel Art Styles
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ── CSS Variables ── */
+:root {
+  --bg:          #0a0a0f;
+  --surface:     #12121e;
+  --surface2:    #1a1a2e;
+  --border:      #2a2a4a;
+  --primary:     #f5c518;
+  --primary-dim: #a88a10;
+  --accent:      #ff3c6e;
+  --green:       #39ff14;
+  --cyan:        #00e5ff;
+  --text:        #e0e0f0;
+  --text-dim:    #8888aa;
+  --radius:      0px;
+
+  --font-pixel: 'Press Start 2P', monospace;
+
+  --shadow-pixel: 4px 4px 0 #000;
+  --border-px: 3px solid var(--border);
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  line-height: 1.8;
+  overflow-x: hidden;
+  position: relative;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ── CRT Scanline Overlay ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.18) 2px,
+    rgba(0, 0, 0, 0.18) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ── CRT Vignette ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.6) 100%);
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* ── Pixel Box ── */
+.pixel-box {
+  background: var(--surface);
+  border: var(--border-px);
+  box-shadow: 4px 4px 0 #000, inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+/* ── Blinking cursor ── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* ── Screen shake ── */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-6px); }
+  40%     { transform: translateX(6px); }
+  60%     { transform: translateX(-4px); }
+  80%     { transform: translateX(4px); }
+}
+.shake { animation: shake 0.35s ease; }
+
+/* ── Flash overlays ── */
+@keyframes flashGreen {
+  0%   { background: rgba(57,255,20,0.25); }
+  100% { background: transparent; }
+}
+@keyframes flashRed {
+  0%   { background: rgba(255,60,110,0.3); }
+  100% { background: transparent; }
+}
+.flash-green { animation: flashGreen 0.5s ease forwards; }
+.flash-red   { animation: flashRed   0.5s ease forwards; }
+
+/* ── Boss idle bounce ── */
+@keyframes bossBounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ── Pixel text glow ── */
+.glow-yellow { text-shadow: 0 0 8px var(--primary), 0 0 20px var(--primary-dim); }
+.glow-red    { text-shadow: 0 0 8px var(--accent),  0 0 20px #a0002a; }
+.glow-green  { text-shadow: 0 0 8px var(--green),   0 0 20px #006600; }
+.glow-cyan   { text-shadow: 0 0 8px var(--cyan),    0 0 16px #004455; }
+
+/* ── Layout ── */
+.screen {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  position: relative;
+}
