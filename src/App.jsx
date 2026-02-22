@@ -21,6 +21,7 @@ export default function App() {
     passThreshold,
     error,
     lastAnswer,
+    answers,
     startGame,
     answerQuestion,
     retry,
@@ -69,6 +70,8 @@ export default function App() {
         passThreshold={passThreshold}
         playerId={playerId}
         onRetry={retry}
+        questions={questions}
+        answers={answers}
       />
     )
   }

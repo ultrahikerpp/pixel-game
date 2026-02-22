@@ -1,116 +1,141 @@
-import { useState, useCallback, useRef } from 'react'
+import { useReducer, useCallback, useRef } from 'react'
 import { fetchQuestions, submitScore } from '../utils/api'
 
 const PASS_THRESHOLD = parseInt(import.meta.env.VITE_PASS_THRESHOLD || '7', 10)
+const ADVANCE_DELAY = 600
+
+const initialState = {
+    phase: 'idle',
+    playerId: '',
+    questions: [],
+    currentIndex: 0,
+    answers: [], // { questionId, chosen, correct }
+    error: null,
+    lastAnswer: null, // 'correct' | 'wrong' | null
+}
+
+function gameReducer(state, action) {
+    switch (action.type) {
+        case 'START_GAME':
+            return {
+                ...initialState,
+                phase: 'loading',
+                playerId: action.payload,
+            }
+        case 'LOAD_QUESTIONS':
+            return {
+                ...state,
+                phase: 'playing',
+                questions: action.payload,
+            }
+        case 'ANSWER': {
+            const { chosen, isCorrect } = action.payload
+            const q = state.questions[state.currentIndex]
+            return {
+                ...state,
+                lastAnswer: isCorrect ? 'correct' : 'wrong',
+                answers: [
+                    ...state.answers,
+                    { questionId: q.id, chosen, correct: isCorrect },
+                ],
+            }
+        }
+        case 'NEXT_QUESTION':
+            return {
+                ...state,
+                lastAnswer: null,
+                currentIndex: state.currentIndex + 1,
+            }
+        case 'SUBMITTING':
+            return {
+                ...state,
+                phase: 'submitting',
+                lastAnswer: null,
+            }
+        case 'SET_RESULT':
+            return {
+                ...state,
+                phase: 'result',
+            }
+        case 'ERROR':
+            return {
+                ...state,
+                phase: 'idle',
+                error: action.payload,
+            }
+        case 'RETRY':
+            return initialState
+        default:
+            return state
+    }
+}
 
 /**
  * Central game state machine.
- * Phases: idle → loading → playing → submitting → result
  */
 export function useGame() {
-    const [phase, setPhase] = useState('idle')
-    const [playerId, setPlayerId] = useState('')
-    const [questions, setQuestions] = useState([])
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const [answers, setAnswers] = useState([]) // { questionId, chosen, correct }
-    const [score, setScore] = useState(0)
-    const [passed, setPassed] = useState(false)
-    const [error, setError] = useState(null)
-    const [lastAnswer, setLastAnswer] = useState(null) // 'correct' | 'wrong' | null
-
+    const [state, dispatch] = useReducer(gameReducer, initialState)
     const scoreRef = useRef(0)
 
+    // Derived values
+    const score = state.answers.filter((a) => a.correct).length
+    const total = state.questions.length
+    const passed = score >= PASS_THRESHOLD
+
     const startGame = useCallback(async (id) => {
-        setPhase('loading')
-        setPlayerId(id)
-        setAnswers([])
-        setCurrentIndex(0)
+        dispatch({ type: 'START_GAME', payload: id })
         scoreRef.current = 0
-        setScore(0)
-        setError(null)
-        setLastAnswer(null)
 
         try {
             const qs = await fetchQuestions()
-            setQuestions(qs)
-            setPhase('playing')
+            dispatch({ type: 'LOAD_QUESTIONS', payload: qs })
         } catch (err) {
-            setError(err.message)
-            setPhase('idle')
+            dispatch({ type: 'ERROR', payload: err.message })
         }
     }, [])
 
     const answerQuestion = useCallback(
         async (chosen) => {
-            if (phase !== 'playing') return
+            if (state.phase !== 'playing') return
 
-            const q = questions[currentIndex]
-            const isCorrect = chosen === q.answer // 'answer' field from GAS / mock
+            const q = state.questions[state.currentIndex]
+            const isCorrect = chosen === q.answer
 
-            setLastAnswer(isCorrect ? 'correct' : 'wrong')
+            dispatch({ type: 'ANSWER', payload: { chosen, isCorrect } })
 
-            if (isCorrect) {
-                scoreRef.current += 1
-                setScore(scoreRef.current)
-            }
-
-            setAnswers((prev) => [
-                ...prev,
-                { questionId: q.id, chosen, correct: isCorrect },
-            ])
-
-            // Advance after short delay so flash animation plays
             setTimeout(async () => {
-                setLastAnswer(null)
-                const nextIndex = currentIndex + 1
+                const isGameOver = state.currentIndex + 1 >= state.questions.length
 
-                if (nextIndex >= questions.length) {
-                    // Game over — submit
-                    const finalScore = scoreRef.current
-                    const didPass = finalScore >= PASS_THRESHOLD
-                    setPassed(didPass)
-                    setPhase('submitting')
-
+                if (isGameOver) {
+                    dispatch({ type: 'SUBMITTING' })
                     try {
-                        await submitScore(playerId, finalScore, questions.length, didPass)
+                        await submitScore(state.playerId, score + (isCorrect ? 1 : 0), total, score + (isCorrect ? 1 : 0) >= PASS_THRESHOLD)
                     } catch (submitErr) {
-                        console.error('[submitScore failed]', submitErr)
+                        console.error('[useGame] submitScore failed:', submitErr)
                     }
-
-                    setPhase('result')
+                    dispatch({ type: 'SET_RESULT' })
                 } else {
-                    setCurrentIndex(nextIndex)
+                    dispatch({ type: 'NEXT_QUESTION' })
                 }
-            }, 600)
+            }, ADVANCE_DELAY)
         },
-        [phase, questions, currentIndex, playerId],
+        [state.phase, state.questions, state.currentIndex, state.playerId, score, total],
     )
 
     const retry = useCallback(() => {
-        setPhase('idle')
-        setQuestions([])
-        setCurrentIndex(0)
-        setAnswers([])
-        setScore(0)
-        setPassed(false)
-        setError(null)
-        setLastAnswer(null)
-        scoreRef.current = 0
+        dispatch({ type: 'RETRY' })
     }, [])
 
     return {
-        phase,
-        playerId,
-        questions,
-        currentIndex,
+        ...state,
         score,
-        total: questions.length,
+        total,
         passed,
         passThreshold: PASS_THRESHOLD,
-        error,
-        lastAnswer,
         startGame,
         answerQuestion,
         retry,
+        answers: state.answers,
     }
 }
+
